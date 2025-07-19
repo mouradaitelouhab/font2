@@ -3,8 +3,7 @@
 
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 
-  "https://5000-i81uy21aw1rsa93czxw00-bbbd7599.manusvm.computer/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://back2-2z57.onrender.com/api";
 
 // Configuration d'axios avec intercepteurs
 const api = axios.create({
