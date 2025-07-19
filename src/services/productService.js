@@ -2,7 +2,7 @@
 // Gère les appels API vers le backend pour les produits
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
-  "https://5000-i81uy21aw1rsa93czxw00-bbbd7599.manusvm.computer/api";
+  "https://back2-2z57.onrender.com/api";
 
 // Fonction utilitaire pour les appels API
 const apiCall = async (endpoint, options = {}) => {
