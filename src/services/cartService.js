@@ -1,8 +1,7 @@
 // Service du panier d'achat pour ALMAS & DIMAS
 // Gère le panier local pour les invités et les appels API pour les utilisateurs connectés
 
-const API_BASE_URL = 'https://back2-2z57.onrender.com/api';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://back2-2z57.onrender.com/api";
 // Clé pour le stockage local du panier
 const CART_STORAGE_KEY = 'almas_dimas_cart';
 
