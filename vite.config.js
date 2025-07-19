@@ -17,13 +17,5 @@ export default defineConfig({
     allowedHosts: [
       
       "https://back2-2z57.onrender.com"
-    ],
-    proxy: {
-      '/api': {
-        target: 'https://back2-2z57.onrender.com/api',  // your backend URL for local dev
-        changeOrigin: true,
-        secure: false,
-      }
-    }
-  }
-})
+    ]
+    
