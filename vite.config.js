@@ -1,21 +1,93 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+// Service des produits pour ALMAS & DIMAS
+// Gère les appels API vers le backend pour les produits
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  server: {
-    host: '0.0.0.0',
-    port: 5174,
-    allowedHosts: [
-      
-      "https://back2-2z57.onrender.com"
-    ]
-    
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+if (!API_BASE_URL) {
+  console.warn(
+    '[Warning] VITE_API_BASE_URL is not set. Falling back to default API URL.'
+  );
+}
+
+const BASE_URL = API_BASE_URL || "https://back2-2z57.onrender.com/api";
+
+// Fonction utilitaire pour les appels API
+const apiCall = async (endpoint, options = {}) => {
+  try {
+    const fetchOptions = {
+      headers: {
+        // Set Content-Type only if not overridden
+        'Content-Type': options.body ? 'application/json' : undefined,
+        ...options.headers,
+      },
+      ...options,
+    };
+
+    const response = await fetch(`${BASE_URL}${endpoint}`, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Assuming all API responses are JSON
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('API call failed:', error);
+    throw error;
+  }
+};
+
+// Récupérer tous les produits avec filtres et pagination
+const getAllProducts = async (filters = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (filters.page) queryParams.append('page', filters.page);
+    if (filters.limit) queryParams.append('limit', filters.limit);
+    if (filters.category) queryParams.append('category', filters.category);
+    if (filters.minPrice) queryParams.append('minPrice', filters.minPrice);
+    if (filters.maxPrice) queryParams.append('maxPrice', filters.maxPrice);
+    if (filters.search) queryParams.append('search', filters.search);
+    if (filters.sortBy) queryParams.append('sortBy', filters.sortBy);
+    if (filters.sortOrder) queryParams.append('sortOrder', filters.sortOrder);
+
+    const endpoint = `/products${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    const response = await apiCall(endpoint);
+
+    return {
+      success: true,
+      products: response.data || [],
+      pagination: response.pagination || {},
+    };
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return {
+      success: false,
+      products: [],
+      error: error.message,
+    };
+  }
+};
+
+// Récupérer un produit par ID
+const getProductById = async (productId) => {
+  try {
+    const response = await apiCall(`/products/${productId}`);
+    return {
+      success: true,
+      product: response.data,
+    };
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+};
+
+export const productService = {
+  getAllProducts,
+  getProductById,
+};
