@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://back2-2z57.on
 
 // Configuration d'axios avec intercepteurs
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -109,4 +109,3 @@ export const authService = {
 };
 
 export default api;
-
