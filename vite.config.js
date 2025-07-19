@@ -14,6 +14,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5174,
-    allowedHosts: ["localhost", "5174-i81uy21aw1rsa93czxw00-bbbd7599.manusvm.computer"],
+    allowedHosts: ["localhost", "https://back2-2z57.onrender.com"],
   }
 })
